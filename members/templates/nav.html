@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookier</title>
+    <link rel='stylesheet' href='{% static "nav.css" %}'></link>
+    <link rel="icon" type="image/x-icon" href='{% static "Hicon/Linear/Profile Square.svg" %}'>
+    <script src="{%static 'nav.js'%}" defer></script>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/Cart">Cart</a></li>
+            <li><a href="/Orders">Orders</a><br></li>
+        </ul>
+        <div class="frame-login">
+            <input type="checkbox" name="" id="cbx-login">
+            <iframe src='{% static "Hicon/Linear/Profile Square.svg" %}' frameborder="0"></iframe>
+        </div>
+    </nav>
+    <div id="drawer">
+        <ul id="dul">
+            <br>
+            <li><a href="/Login">Login</a></li>
+            <br>
+            <li><a href="/Logout">Logout</a></li>
+            <br>
+            <br>
+        </ul>
+    </div>
+</body>
+</html>
