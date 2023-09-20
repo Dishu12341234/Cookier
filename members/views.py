@@ -4,16 +4,18 @@ from django.http import HttpResponseNotFound
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
-from .forms import SignUpForm
-from .models import AppUser
+from .forms import AddItemForm, SignUpForm,LoginForm
+from .models import AppUser, FoodItems
+from django.contrib.auth.hashers import check_password
 # Create your views here.
 
 
 def index(req):
+    print(req.user.is_authenticated)
     return render(req, "index.html", {})
 
 
-def login_user(req):
+def signin_user(req):
     if req.method == 'POST':
         uname = req.POST. get('username')
         email = req.POST.get('email')
@@ -39,9 +41,18 @@ def login_user(req):
         app_user.save()
         login(req, user)
         return redirect('/')
-    return render(req, 'login.html', {'form': SignUpForm()})
+    return render(req, 'signin.html', {'form': SignUpForm()})
 
-    return render(req, 'login.html', {})
+def login_user(req):
+    if req.method == 'POST':
+        username = req.POST.get('username')
+        password = req.POST.get('password')
+        user = User.objects.get(username=username)
+        checked_password = check_password(password,user.password)
+        if checked_password:
+            login(req,user)
+        return redirect('/')
+    return render(req,'login.html',{'form':LoginForm()})
 
 
 def logout_user(req):
@@ -56,6 +67,26 @@ def cart(req):
 def orders(req):
     return render(req, 'orders.html', {})
 
+def add_item(req):
+    if req.user is not None:
+        if req.method == 'POST':
+            username = req.POST.get('username')
+            itemname = req.POST.get('itemname')
+            price = req.POST.get('price')
+            description = req.POST.get('description')
+            ingridents = req.POST.get('ingridents')
+            itemtype = req.POST.get('itemtype')
+            item = FoodItems(username=username,itemname=itemname,price=price,description=description,ingridents=ingridents,itemtype=itemtype)
+            item.save()
+            return redirect('/')
+
+        return render(req,'add_item.html',{'form':AddItemForm()})
+    return redirect('/Login')
 
 def custom_404_view(request, exception=None):
     return render(request, '404.html')
+
+def get_item(req,iname):
+    item = FoodItems.objects.get(itemname=iname)
+    print(item)
+    return render(req,'item.html',{'item':item})

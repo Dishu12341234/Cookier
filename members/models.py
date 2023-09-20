@@ -20,3 +20,14 @@ class AppUser(models.Model):
 
     def __str__(self):
         return self.username
+    
+class FoodItems(models.Model):
+    username = models.CharField(max_length=150)
+    itemname = models.CharField( max_length=50,unique=True)
+    price = models.CharField(max_length=4)
+    description = models.CharField(max_length=300)
+    ingridents = models.CharField(max_length=300)
+    itemtype = models.CharField(max_length=200)
+    def __str__(self):
+        return self.itemname + ' ---->  ' + self.username
+    
