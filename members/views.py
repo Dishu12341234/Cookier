@@ -31,7 +31,7 @@ def signin_user(req):
         app_user = AppUser.objects.create(
             username=uname,
             email=email,
-            password=pass1,  # Note: You should use a secure password hashing method
+            password=user.password,  # Note: You should use a secure password hashing method
             first_name=fname,
             last_name=lname,
             gender=gender,
