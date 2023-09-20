@@ -6,6 +6,13 @@
     <title>Cookier | Login</title>
 </head>
 <body>
-    {% include "nav.html" %}
+    <div id='form-control'>
+        {% include "nav.html" %}
+        <form method='POST'>
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="submit" value='Login'>
+        </form>
+    </div>
 </body>
 </html>

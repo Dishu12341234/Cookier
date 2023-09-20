@@ -1,0 +1,9 @@
+#side-list
+{
+    position: relative;
+    width: 15dvw;
+    /* height: 92.2dvh; */
+    background: #000;
+    background-color: #C49832;
+    border-top: 1px solid white;
+}
