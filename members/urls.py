@@ -10,4 +10,5 @@ urlpatterns = [
     path('Orders/',views.orders,name='orders'),
     path('AddItem/',views.add_item,name='ai'),
     path('GetItem/<str:iname>',views.get_item,name='gi'),
+    path('ChangeItem/<str:iname>',views.change_item,name='ci'),
 ]

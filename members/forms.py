@@ -11,6 +11,11 @@ class AddItemForm(forms.ModelForm):
     class Meta:
         model = FoodItems
         fields = ['username','itemname','price','description','ingridents','itemtype']
+class ChangeItemForm(AddItemForm):
+    newitemname = forms.CharField(max_length=50)
+    class Meta:
+        model = FoodItems
+        fields = AddItemForm.Meta.fields
 
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=150,required=True)

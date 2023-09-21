@@ -1,9 +1,26 @@
-#side-list
-{
-    position: relative;
-    width: 15dvw;
-    /* height: 92.2dvh; */
+#side-list {
+    position: absolute;
+    width: 15vw;
     background: #000;
     background-color: #C49832;
     border-top: 1px solid white;
+    z-index: 2; /* Ensure the sidebar is above content. */
+    top: 78px; /* Position it at the top of the viewport. */
+
+    left: 0; /* Position it at the left side of the viewport. */
+}
+
+#content {
+    margin-left: 15vw; /* Adjust margin to account for sidebar width. */
+    padding: 20px; /* Add padding to content for spacing. */
+    z-index: 1; /* Ensure content is below the sidebar. */
+}
+
+tr
+{
+    margin: 10px;
+}
+td,th
+{
+    padding: 20px;
 }

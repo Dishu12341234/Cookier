@@ -2,16 +2,63 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel='stylesheet' href='{% static "index.css" %}'></link>
+    <link rel='stylesheet' href='{% static "index.css" %}'>
+    </link>
     <title>Cookier</title>
 </head>
+
 <body>
     {% include "nav.html" %}
     <div id='side-list'>
         <p>{% lorem 3 p random %}</p>
     </div>
+    <div id='content'>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Food Name</th>
+                <th>Price</th>
+                <th>Ingridients</th>
+                <th>Type</th>
+            </tr>
+        </table>
+    </div>
 </body>
+
 </html>
+
+<script>
+    var myList = [
+        {% for item in items %}
+    JSON.parse(("{{ item|safe }}").replaceAll("'", '"')),
+        {% endfor %}
+    ];
+    const content = document.getElementById('content')
+    const table = document.querySelector("table")
+    for (eKeys in myList) {
+        let htmlInsideTable;
+        htmlInsideTable = `<tr>`
+        for (eKey in myList[eKeys]) {
+            if (eKey !== 'id' && eKey !== 'description') {
+                htmlInsideTable += `<td>`
+                htmlInsideTable += `${myList[eKeys][eKey]}`
+                htmlInsideTable += `</td>`
+            }
+        }
+        htmlInsideTable += `</tr>`
+        table.innerHTML += htmlInsideTable
+    }
+    user = '{{admin}}'
+    if (user == 'True') {
+        drawer = document.getElementById('drawer').children[0]
+        console.log(user)
+        drawer.innerHTML += '<li><a href="/AddItem">AddItem</a></li>'
+        drawer.innerHTML += '<hr>'
+        {% comment %} drawer.innerHTML += '<li><a href="/ChangeItem">ChanegItem</a></li>' {% endcomment %}
+    }
+
+</script>
