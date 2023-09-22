@@ -32,10 +32,10 @@ class FoodItems(models.Model):
         return self.itemname + ' ---->  ' + self.username
     
 
-class ItemLogs(models.Model):
+class Cart(models.Model):
     username = models.CharField(max_length=150)
     itemname = models.CharField( max_length=50,unique=True)
     amount = models.IntegerField()
-
+    
     def __str__(self):
-        return self.itemname + ' ---->  ' + self.username
+        return self.itemname + ' ---->  ' + f'{self.amount}'

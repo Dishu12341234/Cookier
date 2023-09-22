@@ -1,11 +1,12 @@
+from django.db import IntegrityError
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from django.http import HttpResponseNotFound
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
 from .forms import AddItemForm, ChangeItemForm, SignUpForm,LoginForm
-from .models import AppUser, FoodItems, ItemLogs
+from .models import AppUser, FoodItems, Cart
 from django.contrib.auth.hashers import check_password
 # Create your views here.
 
@@ -62,8 +63,23 @@ def logout_user(req):
     return render(req, 'logout.html', {})
 
 
-def cart(req):
-    return render(req, 'cart.html', {})
+def cart(req,itemname='',amount=0):
+    if req.user.is_authenticated:
+        if req.method == 'POST':
+            try:
+                cart = Cart.objects.create(username=req.user.username,itemname=itemname,amount=amount)
+                if itemname is not None and amount is not None:
+                    cart.save()
+            except IntegrityError:
+                cart = Cart.objects.get(username=req.user.username,itemname=itemname)
+                cart.amount += int(amount)
+                print(cart.amount)
+                cart.save()
+
+            return JsonResponse({'succes':'true'})
+    
+    cart = Cart.objects.filter(username=req.user.username).values()
+    return render(req, 'cart.html',{'cart':cart})
 
 
 def orders(req):
@@ -88,8 +104,8 @@ def add_item(req):
 def custom_404_view(request, exception=None):
     return render(request, '404.html')
 
-def get_item(req,iname):
-    item = FoodItems.objects.get(itemname=iname)
+def get_item(req,iname,uname):
+    item = FoodItems.objects.get(itemname=iname,username=uname)
     print(item)
     return render(req,'item.html',{'item':item})
 
@@ -113,6 +129,7 @@ def change_item(req,iname):
             item.itemtype = itemtype
             item.save()
             return redirect('/')
+        
 
         return render(req,'add_item.html',{'form':ChangeItemForm()})
     return redirect('/Login')

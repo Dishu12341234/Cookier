@@ -1,8 +1,9 @@
 #side-list {
+    color: white;
     position: absolute;
     width: 15vw;
     background: #000;
-    background-color: #C49832;
+    background-color: #ff4040;
     border-top: 1px solid white;
     z-index: 2; /* Ensure the sidebar is above content. */
     top: 78px; /* Position it at the top of the viewport. */
@@ -11,6 +12,7 @@
 }
 
 #content {
+    color: white;
     margin-left: 15vw; /* Adjust margin to account for sidebar width. */
     padding: 20px; /* Add padding to content for spacing. */
     z-index: 1; /* Ensure content is below the sidebar. */
@@ -23,4 +25,49 @@ tr
 td,th
 {
     padding: 20px;
+}
+
+.box
+{
+    margin: 1dvh;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #000;
+    background-color: #ff4040;
+    padding: 20px;
+    border-radius: 3px;
+    box-shadow: 3px 3px 3px  #555;
+    transition: all .1s linear;
+    cursor: crosshair;
+}
+
+.box:hover
+{
+    background-color: #ff8080;
+}
+
+.cbx
+{
+    position: relative;
+}
+
+input[type='submit']
+{
+    display: block;
+    margin: 10px;
+    color: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #ff4040;
+    transition: height .05s ease-in,width .1 ease-in;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+}
+
+input[type='submit']:hover
+{
+    color: #ff8080;
+    background-color: white;
+    border-radius: 20px;
 }

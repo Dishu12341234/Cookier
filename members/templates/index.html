@@ -13,19 +13,11 @@
 
 <body>
     {% include "nav.html" %}
+    {% csrf_token %}
     <div id='side-list'>
         <p>{% lorem 3 p random %}</p>
     </div>
     <div id='content'>
-        <table>
-            <tr>
-                <th>Name</th>
-                <th>Food Name</th>
-                <th>Price</th>
-                <th>Ingridients</th>
-                <th>Type</th>
-            </tr>
-        </table>
     </div>
 </body>
 
@@ -38,19 +30,20 @@
         {% endfor %}
     ];
     const content = document.getElementById('content')
-    const table = document.querySelector("table")
+    const table = document.querySelector("#content")
     for (eKeys in myList) {
-        let htmlInsideTable;
-        htmlInsideTable = `<tr>`
+        let htmlInsideTable = '';
+        htmlInsideTable += `<div class="box" id="${eKeys}-box">`
+        htmlInsideTable += `<input type='submit' onclick = 'page(event)' class="${[myList[eKeys]['itemname'],1]}">Add To Cart</button>`
         for (eKey in myList[eKeys]) {
             if (eKey !== 'id' && eKey !== 'description') {
-                htmlInsideTable += `<td>`
-                htmlInsideTable += `${myList[eKeys][eKey]}`
-                htmlInsideTable += `</td>`
+                entry = myList[eKeys][eKey]
+                if(entry)
+                htmlInsideTable += `<p>${entry}</p>`
             }
         }
-        htmlInsideTable += `</tr>`
-        table.innerHTML += htmlInsideTable
+        htmlInsideTable += "</div>"
+        content.innerHTML += htmlInsideTable
     }
     user = '{{admin}}'
     if (user == 'True') {
@@ -61,4 +54,19 @@
         {% comment %} drawer.innerHTML += '<li><a href="/ChangeItem">ChanegItem</a></li>' {% endcomment %}
     }
 
+    function page(e)
+    {
+        const csrfToken = document.querySelector('input[name=csrfmiddlewaretoken]').value;  
+        array = '['+e.target.className+']'
+        const validJSONArray = JSON.parse(array.replace(/(\w+)/g, '"$1"'));
+        req = fetch(`/Cart/${validJSONArray[0]}/${validJSONArray[1]}`,{method:'POST',headers: {'X-CSRFToken': csrfToken,'Content-Type': 'application/json'}})
+        req.then(res=>{
+            console.log(res)
+            window.location.href = '/Cart'
+        })
+    }
+
+    document.addEventListener('selectstart', function (e) {
+        e.preventDefault();
+      });
 </script>

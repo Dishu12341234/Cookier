@@ -9,7 +9,7 @@ body {
 }
 /* Navbar styling */
 nav {
-    background-color: #C49832;
+    background-color: #ff4040;
     padding: 20px 0;
     display: flex;
     justify-content: space-between;
@@ -81,7 +81,7 @@ iframe {
     width: 20dvw;
     right: 2px; /* Change 'left' to 'right' */
     margin-bottom: 10px;
-    background-color: #C49832;
+    background-color: #ff749f;
     border-top: 2px solid white;
     border-radius: 0 0 10px 10px;
     overflow: hidden;
