@@ -34,7 +34,7 @@
     for (eKeys in myList) {
         let htmlInsideTable = '';
         htmlInsideTable += `<div class="box" id="${eKeys}-box">`
-        htmlInsideTable += `<input type='submit' onclick = 'page(event)' class="${[myList[eKeys]['itemname'],1]}">Add To Cart</button>`
+        htmlInsideTable += `<input type='submit' onclick = 'page(event)' class="${[myList[eKeys]['itemname'],1,myList[eKeys]['price']]}" value='Add to Cart'>`
         for (eKey in myList[eKeys]) {
             if (eKey !== 'id' && eKey !== 'description') {
                 entry = myList[eKeys][eKey]
@@ -59,11 +59,12 @@
         const csrfToken = document.querySelector('input[name=csrfmiddlewaretoken]').value;  
         array = '['+e.target.className+']'
         const validJSONArray = JSON.parse(array.replace(/(\w+)/g, '"$1"'));
-        req = fetch(`/Cart/${validJSONArray[0]}/${validJSONArray[1]}`,{method:'POST',headers: {'X-CSRFToken': csrfToken,'Content-Type': 'application/json'}})
+        console.log(`/Cart/${validJSONArray[0]}/${validJSONArray[1]}/${validJSONArray[2]}`)
+        req = fetch(`/Cart/${validJSONArray[0]}/${validJSONArray[1]}/${validJSONArray[2]}`,{method:'POST',headers: {'X-CSRFToken': csrfToken,'Content-Type': 'application/json'}})
         req.then(res=>{
             console.log(res)
             window.location.href = '/Cart'
-        })
+        }) 
     }
 
     document.addEventListener('selectstart', function (e) {

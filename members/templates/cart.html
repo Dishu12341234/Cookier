@@ -1,19 +1,38 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cookier | Login</title>
+    <link rel='stylesheet' href='{% static "cart.css" %}'>
 </head>
 <body>
     {% include "nav.html" %}
+    <div class="cart-op">
+        <form method='POST' action='/Order'>
+            {% csrf_token %}
+            <input type='submit'>
+        </form>
+    </div>
     {% for item in cart %}
+    {% if item.amount >= 1 %}
+    <div class='box'>
         {% for key, value in item.items %}
-            {% if key != 'id' %}
-                <p>{{ value }}</p>
-            {% endif %}
+        {% if key != 'id'%}
+        <p class='{{key}}'>{{ value }}</p>
+        {% endif %}
         {% endfor %}
-        <br>
-    {% endfor %}
+        <div class='up-down'>
+            <button>+</button>
+            <button>-</button>
+        </div>
+    </div>
+    {% endif %}
+        {% endfor %}
 </body>
 </html>
+
+<script src='{% static "cart.js" %}'>
+
+</script>

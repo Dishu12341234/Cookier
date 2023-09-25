@@ -1,3 +1,4 @@
+import json
 from django.db import IntegrityError
 from django.shortcuts import render
 from django.http import HttpResponse,JsonResponse
@@ -6,7 +7,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
 from .forms import AddItemForm, ChangeItemForm, SignUpForm,LoginForm
-from .models import AppUser, FoodItems, Cart
+from .models import AppUser, FoodItems, Cart, Orders
 from django.contrib.auth.hashers import check_password
 # Create your views here.
 
@@ -63,23 +64,24 @@ def logout_user(req):
     return render(req, 'logout.html', {})
 
 
-def cart(req,itemname='',amount=0):
+def cart(req,itemname='',amount=0,price=0):
     if req.user.is_authenticated:
         if req.method == 'POST':
             try:
-                cart = Cart.objects.create(username=req.user.username,itemname=itemname,amount=amount)
+                cart = Cart.objects.create(username=req.user.username,itemname=itemname,amount=amount,price=price)
                 if itemname is not None and amount is not None:
                     cart.save()
             except IntegrityError:
                 cart = Cart.objects.get(username=req.user.username,itemname=itemname)
-                cart.amount += int(amount)
-                print(cart.amount)
+                cart.amount = abs(int(amount) + int(cart.amount))
+                cart.price = abs(int(price) * int(cart.amount))
                 cart.save()
 
             return JsonResponse({'succes':'true'})
     
-    cart = Cart.objects.filter(username=req.user.username).values()
-    return render(req, 'cart.html',{'cart':cart})
+        cart = Cart.objects.filter(username=req.user.username).values()
+        return render(req, 'cart.html',{'cart':cart})
+    return redirect('/Login')
 
 
 def orders(req):
@@ -133,3 +135,15 @@ def change_item(req,iname):
 
         return render(req,'add_item.html',{'form':ChangeItemForm()})
     return redirect('/Login')
+
+def order(req,tp=0,items=0):
+    if req.method == 'POST' and req.user.is_authenticated:
+        items = json.loads(items)['iname']
+        itemsList = str('')
+        for v in items:
+            itemsList += f'{v}, '
+        itemsList = itemsList[:-2]
+        order = Orders.objects.create(username = req.user.username,totalPrice=tp,items=itemsList)
+        # print(order)
+        pass
+    return HttpResponse('This is orders page')

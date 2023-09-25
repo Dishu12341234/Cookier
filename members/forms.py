@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django import forms
-from .models import AppUser,FoodItems
+from .models import AppUser,FoodItems,Orders
 
 class SignUpForm(forms.ModelForm):
     class Meta:

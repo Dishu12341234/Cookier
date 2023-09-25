@@ -1,4 +1,5 @@
 from django.db import models
+import json
 
 # Create your models here.
 class AppUser(models.Model):
@@ -35,7 +36,18 @@ class FoodItems(models.Model):
 class Cart(models.Model):
     username = models.CharField(max_length=150)
     itemname = models.CharField( max_length=50,unique=True)
-    amount = models.IntegerField()
+    price = models.IntegerField(default=0)
+    amount = models.IntegerField(default=0)
     
     def __str__(self):
         return self.itemname + ' ---->  ' + f'{self.amount}'
+    
+
+class Orders(models.Model):
+    username = models.CharField(max_length=150)
+    totalPrice = models.BigIntegerField(default=0)
+    items = models.TextField(null=False,blank=False)#Store JSON Data only
+    date = models.DateField(auto_now=True)
+    
+    def __str__(self):
+        return self.username + ' for ' + f'Rs{self.totalPrice}' + ' at ' + f'{self.date}'
